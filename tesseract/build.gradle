@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
 
@@ -22,13 +24,31 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //ROOM
+    api "androidx.room:room-runtime:2.1.0-alpha06"
+    kapt "androidx.room:room-compiler:2.1.0-alpha06" // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    api "androidx.room:room-ktx:2.1.0-alpha06"
+    api "androidx.room:room-rxjava2:2.1.0-alpha06"
+}
+repositories {
+    mavenCentral()
 }
