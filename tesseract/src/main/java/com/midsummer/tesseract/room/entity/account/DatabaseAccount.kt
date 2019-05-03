@@ -1,9 +1,11 @@
-package com.midsummer.tesseract.room.entity
+package com.midsummer.tesseract.room.entity.account
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.midsummer.tesseract.common.Config
 
 /**
@@ -26,6 +28,8 @@ abstract class DatabaseAccount : RoomDatabase(){
                 synchronized(DatabaseAccount::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         DatabaseAccount::class.java, Config.Databse.NAME)
+                        .openHelperFactory(SafeHelperFactory
+                            .fromUser(SpannableStringBuilder("TEST")))
                         .build()
                 }
             }

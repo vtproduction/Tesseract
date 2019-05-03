@@ -2,10 +2,9 @@ package com.midsummer.tesseractSample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
-import com.midsummer.tesseract.room.entity.DatabaseAccount
-import com.midsummer.tesseract.room.entity.EntityAccount
+import com.midsummer.tesseract.room.entity.account.DatabaseAccount
+import com.midsummer.tesseract.room.entity.account.EntityAccount
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -31,7 +30,14 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun add(active: Boolean){
-        val account = EntityAccount("${Calendar.getInstance().timeInMillis}",active,"yeah",0,0,">>")
+        val account = EntityAccount(
+            "${Calendar.getInstance().timeInMillis}",
+            active,
+            "yeah",
+            0,
+            0,
+            ">>"
+        )
         mDB?.accountDAO()?.addAccount(account)
             ?.subscribeOn(Schedulers.io())
             ?.doOnSuccess {

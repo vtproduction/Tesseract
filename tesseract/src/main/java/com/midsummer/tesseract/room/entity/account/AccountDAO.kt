@@ -1,9 +1,6 @@
-package com.midsummer.tesseract.room.entity
+package com.midsummer.tesseract.room.entity.account
 
 import androidx.room.*
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Maybe
 import io.reactivex.Single
 
 /**

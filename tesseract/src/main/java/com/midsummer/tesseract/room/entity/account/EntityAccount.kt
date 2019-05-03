@@ -1,4 +1,4 @@
-package com.midsummer.tesseract.room.entity
+package com.midsummer.tesseract.room.entity.account
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -42,5 +42,17 @@ data class EntityAccount (
     /**
      * The serializable of any object that contain extra data of EntityAccount
      */
-    var metadata: String
+    var metadata: String = "",
+
+    /**
+     * Include some direct metadata to the object to easily call from query (maybe...)
+     * I just watched Endgame last night, so I decided to use 6 data fields corresponding
+     * to 6 Infinity stones =)
+     */
+    var dataTIME: String = "",
+    var dataSPACE: String = "",
+    var dataMIND: String = "",
+    var dataSOUL: String = "",
+    var dataREALITY: String = "",
+    var dataPOWER: String = ""
 )
