@@ -56,6 +56,7 @@ dependencies {
 
     //WEB3J
     implementation "org.web3j:core:4.2.0-android"
+    implementation group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.7'
 }
 repositories {
     mavenCentral()

@@ -15,7 +15,7 @@ import com.midsummer.tesseract.common.Config
  * Happy coding ^_^
  */
 
-@Database(entities = [EntityAccount::class], version = Config.Databse.VERSION, exportSchema = false)
+@Database(entities = [EntityAccount::class], version = Config.Database.VERSION, exportSchema = false)
 abstract class DatabaseAccount : RoomDatabase(){
 
     abstract fun accountDAO(): AccountDAO
@@ -27,7 +27,7 @@ abstract class DatabaseAccount : RoomDatabase(){
             if (INSTANCE == null) {
                 synchronized(DatabaseAccount::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                        DatabaseAccount::class.java, Config.Databse.NAME)
+                        DatabaseAccount::class.java, Config.Database.NAME)
                         .openHelperFactory(SafeHelperFactory
                             .fromUser(SpannableStringBuilder("TEST")))
                         .build()

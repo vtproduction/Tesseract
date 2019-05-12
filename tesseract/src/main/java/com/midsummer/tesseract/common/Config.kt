@@ -8,10 +8,17 @@ package com.midsummer.tesseract.common
  */
 class Config {
 
-    class Databse{
+    class Database{
         companion object {
             const val VERSION = 1
             const val NAME = "tesseract.db"
+        }
+    }
+
+
+    class HDPath {
+        companion object {
+            const val TOMO = "m/44'/889'/0'/0/0"
         }
     }
 

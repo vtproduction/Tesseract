@@ -16,6 +16,9 @@ class EntityWallet {
     var publicKey : String = ""
     var dataSource : String = ""
     var metadata: String = ""
+    var walletName : String  = ""
+    var chainId : Int = -1
     var createdBy : Int = WalletSource.UNKNOWN
+    var createAt : Long = 0L
 
 }
