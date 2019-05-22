@@ -1,10 +1,10 @@
-package com.midsummer.tesseract.w3jl.signer
+package com.midsummer.tesseract.w3jl.components.signer
 
 import android.util.Log
 import com.midsummer.tesseract.common.LogTag.TAG_W3JL
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.utils.ValidationUtil
-import com.midsummer.tesseract.w3jl.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.Sign
@@ -27,11 +27,23 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
     override fun signRawMessage(account: EntityWallet?, message: String?): SignResult {
         return try{
             if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
-                SignResult(SignStatus.SIGN_INVALID_CREDENTIAL,message,null,null, InvalidPrivateKeyException())
+                SignResult(
+                    SignStatus.SIGN_INVALID_CREDENTIAL,
+                    message,
+                    null,
+                    null,
+                    InvalidPrivateKeyException()
+                )
             }
 
             if (message == null){
-                SignResult(SignStatus.SIGN_INVALID_INPUT,null,null,account?.address, Exception("Null or empty input"))
+                SignResult(
+                    SignStatus.SIGN_INVALID_INPUT,
+                    null,
+                    null,
+                    account?.address,
+                    Exception("Null or empty input")
+                )
             }
 
             val credential = Credentials.create(account!!.privateKey)
@@ -39,12 +51,24 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
             val signed = Numeric.toHexString(signature.r) +
                     Numeric.cleanHexPrefix(Numeric.toHexString(signature.s)) +
                     Integer.toHexString(signature.v.toInt())
-            SignResult(SignStatus.SIGN_SUCCESS,message,signed,credential.address, null)
+            SignResult(
+                SignStatus.SIGN_SUCCESS,
+                message,
+                signed,
+                credential.address,
+                null
+            )
 
 
         }catch(t: Throwable){
             Log.e(TAG_W3JL,"SignerServiceImpl > signRawMessage: ${t.localizedMessage}")
-            SignResult(SignStatus.SIGN_FAIL_GENERAL,message,null,null, t)
+            SignResult(
+                SignStatus.SIGN_FAIL_GENERAL,
+                message,
+                null,
+                null,
+                t
+            )
         }
     }
 
@@ -55,11 +79,23 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
     override fun signPersonalMessage(account: EntityWallet?, message: String?): SignResult {
         return try{
             if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
-                SignResult(SignStatus.SIGN_INVALID_CREDENTIAL,message,null,null, InvalidPrivateKeyException())
+                SignResult(
+                    SignStatus.SIGN_INVALID_CREDENTIAL,
+                    message,
+                    null,
+                    null,
+                    InvalidPrivateKeyException()
+                )
             }
 
             if (message == null){
-                SignResult(SignStatus.SIGN_INVALID_INPUT,null,null,account?.address, Exception("Null or empty input"))
+                SignResult(
+                    SignStatus.SIGN_INVALID_INPUT,
+                    null,
+                    null,
+                    account?.address,
+                    Exception("Null or empty input")
+                )
             }
 
             val credential = Credentials.create(account!!.privateKey)
@@ -67,12 +103,24 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
             val signed = Numeric.toHexString(signature.r) +
                     Numeric.cleanHexPrefix(Numeric.toHexString(signature.s)) +
                     Integer.toHexString(signature.v.toInt())
-            SignResult(SignStatus.SIGN_SUCCESS,message,signed,credential.address, null)
+            SignResult(
+                SignStatus.SIGN_SUCCESS,
+                message,
+                signed,
+                credential.address,
+                null
+            )
 
 
         }catch(t: Throwable){
             Log.e(TAG_W3JL,"SignerServiceImpl > signPersonalMessage: ${t.localizedMessage}")
-            SignResult(SignStatus.SIGN_FAIL_GENERAL,message,null,null, t)
+            SignResult(
+                SignStatus.SIGN_FAIL_GENERAL,
+                message,
+                null,
+                null,
+                t
+            )
         }
     }
 
@@ -86,7 +134,13 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
     ): SignResult {
         return try{
             if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
-                SignResult(SignStatus.SIGN_INVALID_CREDENTIAL,null,null,null, InvalidPrivateKeyException())
+                SignResult(
+                    SignStatus.SIGN_INVALID_CREDENTIAL,
+                    null,
+                    null,
+                    null,
+                    InvalidPrivateKeyException()
+                )
             }
 
             val credential = Credentials.create(account?.privateKey)
@@ -105,12 +159,24 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
             val signedMessage = TransactionEncoder.signMessage(rawTransaction, credential)
             val signedMessageHex  = Numeric.toHexString(signedMessage)
 
-            SignResult(SignStatus.SIGN_SUCCESS,"",signedMessageHex,credential.address, null)
+            SignResult(
+                SignStatus.SIGN_SUCCESS,
+                "",
+                signedMessageHex,
+                credential.address,
+                null
+            )
 
 
         }catch(t: Throwable){
             Log.e(TAG_W3JL,"SignerServiceImpl > signPersonalMessage: ${t.localizedMessage}")
-            SignResult(SignStatus.SIGN_FAIL_GENERAL,null,null,null, t)
+            SignResult(
+                SignStatus.SIGN_FAIL_GENERAL,
+                null,
+                null,
+                null,
+                t
+            )
         }
     }
 }

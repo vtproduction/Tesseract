@@ -1,4 +1,4 @@
-package com.midsummer.tesseract.w3jl.wallet
+package com.midsummer.tesseract.w3jl.components.wallet
 
 import android.util.Log
 import com.midsummer.tesseract.common.LogTag

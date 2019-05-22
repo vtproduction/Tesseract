@@ -1,4 +1,4 @@
-package com.midsummer.tesseract.w3jl.signer
+package com.midsummer.tesseract.w3jl.components.signer
 
 /**
  * Created by cityme on 22,May,2019

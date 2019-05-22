@@ -1,6 +1,6 @@
-package com.midsummer.tesseract.w3jl.signer
+package com.midsummer.tesseract.w3jl.components.signer
 
-import com.midsummer.tesseract.w3jl.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
 import java.math.BigInteger
 
 /**
@@ -12,8 +12,8 @@ import java.math.BigInteger
 interface SignerService {
 
     fun signRawMessage(account: EntityWallet?, message: String?) : SignResult
-    fun signMessage(account: EntityWallet?, message: String?) :  SignResult
-    fun signPersonalMessage(account: EntityWallet?, message: String?) :  SignResult
+    fun signMessage(account: EntityWallet?, message: String?) : SignResult
+    fun signPersonalMessage(account: EntityWallet?, message: String?) : SignResult
 
     fun signTransaction(account: EntityWallet?,
                         recipient: String,
