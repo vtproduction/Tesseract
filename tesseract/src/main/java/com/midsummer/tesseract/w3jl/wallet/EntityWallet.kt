@@ -21,4 +21,7 @@ class EntityWallet {
     var createdBy : Int = WalletSource.UNKNOWN
     var createAt : Long = 0L
 
+    override fun toString(): String {
+        return "EntityWallet{address: $address, metadata: $metadata, walletName: $walletName, chainId: $chainId, createdBy: $createdBy}"
+    }
 }
