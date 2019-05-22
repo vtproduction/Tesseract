@@ -21,7 +21,7 @@ import java.nio.charset.Charset
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class SignerServiceImpl(var web3j: Web3j) : SignerService {
+class SignerServiceImpl(var web3j: Web3j?) : SignerService {
 
 
     override fun signRawMessage(account: EntityWallet?, message: String?): SignResult {
@@ -146,9 +146,9 @@ class SignerServiceImpl(var web3j: Web3j) : SignerService {
             val credential = Credentials.create(account?.privateKey)
             val realAmount = amount ?: BigInteger.ZERO
             val from = credential.address
-            val ethGetTransactionCount = web3j.ethGetTransactionCount(
-                from, DefaultBlockParameterName.LATEST).sendAsync().get()
-            val nonce = ethGetTransactionCount.transactionCount
+            val ethGetTransactionCount = web3j?.ethGetTransactionCount(
+                from, DefaultBlockParameterName.LATEST)?.sendAsync()?.get()
+            val nonce = ethGetTransactionCount?.transactionCount
             val rawTransaction = if (payload == null || payload.isEmpty()){
                 RawTransaction.createEtherTransaction(
                     nonce, gasPrice, gasLimit, recipient, realAmount)
