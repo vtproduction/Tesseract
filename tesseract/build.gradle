@@ -35,24 +35,22 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //ROOM
-    api "androidx.room:room-runtime:2.1.0-alpha07"
-    kapt "androidx.room:room-compiler:2.1.0-alpha07" // For Kotlin use kapt instead of annotationProcessor
+    api "androidx.room:room-runtime:2.1.0-beta01"
+    kapt "androidx.room:room-compiler:2.1.0-beta01" // For Kotlin use kapt instead of annotationProcessor
     implementation "com.commonsware.cwac:saferoom.x:1.0.2"
     // optional - Kotlin Extensions and Coroutines support for Room
-    api "androidx.room:room-ktx:2.1.0-alpha07"
-    api "androidx.room:room-rxjava2:2.1.0-alpha07"
-
+    api "androidx.room:room-ktx:2.1.0-beta01"
+    api "androidx.room:room-rxjava2:2.1.0-beta01"
 
     //HABAK
     implementation "com.google.code.gson:gson:2.8.5"
-
 
     //WEB3J
     implementation "org.web3j:core:4.2.0-android"
