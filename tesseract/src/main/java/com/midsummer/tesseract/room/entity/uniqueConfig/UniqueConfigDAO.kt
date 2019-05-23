@@ -24,7 +24,7 @@ interface UniqueConfigDAO {
     @Update
     fun update(config: EntityConfig) : Single<Int>
 
-    @Query("DELETE FROM EntityAccount")
+    @Query("DELETE FROM EntityConfig")
     fun delete() : Single<Int>
 
 }
