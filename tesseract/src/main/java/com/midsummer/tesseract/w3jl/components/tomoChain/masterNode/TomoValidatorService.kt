@@ -1,6 +1,6 @@
 package com.midsummer.tesseract.w3jl.components.tomoChain.masterNode
 
-import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
 import java.math.BigInteger
 

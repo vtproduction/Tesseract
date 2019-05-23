@@ -4,7 +4,7 @@ import android.util.Log
 import com.midsummer.tesseract.common.LogTag.TAG_W3JL
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.utils.ValidationUtil
-import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.Sign

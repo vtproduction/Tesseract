@@ -1,4 +1,4 @@
-package com.midsummer.tesseract.w3jl.components.wallet
+package com.midsummer.tesseract.w3jl.entity
 
 import com.midsummer.tesseract.w3jl.constant.WalletSource
 

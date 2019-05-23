@@ -6,15 +6,14 @@ import com.midsummer.tesseract.common.exception.InvalidAddressException
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.constant.WalletSource
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import io.reactivex.Single
 import org.bitcoinj.crypto.ChildNumber
 import org.bitcoinj.crypto.HDKeyDerivation
 import org.bitcoinj.wallet.DeterministicSeed
 import org.web3j.crypto.*
-import org.web3j.protocol.Web3j
 import org.web3j.utils.Numeric
 import java.security.SecureRandom
-import java.util.*
 
 /**
  * Created by NienLe on 2019-05-09,May,2019

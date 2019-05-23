@@ -1,6 +1,7 @@
 package com.midsummer.tesseract.w3jl.components.wallet
 
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import io.reactivex.Single
 
 /**

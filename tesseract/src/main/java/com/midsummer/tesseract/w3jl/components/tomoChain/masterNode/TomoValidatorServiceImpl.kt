@@ -1,9 +1,7 @@
 package com.midsummer.tesseract.w3jl.components.tomoChain.masterNode
 
 import android.annotation.SuppressLint
-import android.util.Log
-import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
-import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.datatypes.Address

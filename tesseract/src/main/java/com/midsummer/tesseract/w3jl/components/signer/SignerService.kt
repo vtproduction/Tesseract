@@ -1,6 +1,6 @@
 package com.midsummer.tesseract.w3jl.components.signer
 
-import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import java.math.BigInteger
 
 /**

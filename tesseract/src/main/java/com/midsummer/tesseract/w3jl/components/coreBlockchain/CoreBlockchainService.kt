@@ -1,6 +1,6 @@
 package com.midsummer.tesseract.w3jl.components.coreBlockchain
 
-import com.midsummer.tesseract.w3jl.components.wallet.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import io.reactivex.Single
 import java.math.BigInteger
 
@@ -15,9 +15,9 @@ interface CoreBlockchainService {
     fun getAccountBalance(account: EntityWallet?, lastBalance: BigInteger?) : Single<BigInteger>
     fun getTransactionCount(account: EntityWallet?) : Single<BigInteger>
     fun transfer(account: EntityWallet?,
-                        recipient: String,
-                        amount: BigInteger?,
-                        gasPrice: BigInteger?,
-                        gasLimit: BigInteger?,
-                        payload: String?) : Single<String>
+                 recipient: String,
+                 amount: BigInteger?,
+                 gasPrice: BigInteger?,
+                 gasLimit: BigInteger?,
+                 payload: String?) : Single<String>
 }
