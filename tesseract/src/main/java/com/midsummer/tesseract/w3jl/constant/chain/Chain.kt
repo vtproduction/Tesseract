@@ -12,7 +12,7 @@ interface Chain {
     fun getChainName() : String
     fun getChainId() : Int
     fun getExplorerURL() : String
-    fun getCoinbaseUnit() : String
-    fun getCoinbaseSymbol() : String
+    fun getCoinBaseUnit() : String
+    fun getCoinBaseSymbol() : String
     fun getHDPath() : String
 }

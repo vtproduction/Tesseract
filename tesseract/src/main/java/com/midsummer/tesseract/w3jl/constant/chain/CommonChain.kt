@@ -25,11 +25,11 @@ enum class CommonChain : Chain {
             return "https://scan.tomochain.com"
         }
 
-        override fun getCoinbaseUnit(): String {
+        override fun getCoinBaseUnit(): String {
             return "TomoChain"
         }
 
-        override fun getCoinbaseSymbol(): String {
+        override fun getCoinBaseSymbol(): String {
             return "TOMO"
         }
 
@@ -55,11 +55,11 @@ enum class CommonChain : Chain {
             return "https://scan.testnet.tomochain.com"
         }
 
-        override fun getCoinbaseUnit(): String {
+        override fun getCoinBaseUnit(): String {
             return "TomoChain"
         }
 
-        override fun getCoinbaseSymbol(): String {
+        override fun getCoinBaseSymbol(): String {
             return "TOMO"
         }
 
@@ -85,11 +85,11 @@ enum class CommonChain : Chain {
             return "https://scan.devnet.tomochain.com"
         }
 
-        override fun getCoinbaseUnit(): String {
+        override fun getCoinBaseUnit(): String {
             return "TomoChain"
         }
 
-        override fun getCoinbaseSymbol(): String {
+        override fun getCoinBaseSymbol(): String {
             return "TOMO"
         }
 
