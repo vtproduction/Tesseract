@@ -11,11 +11,11 @@ import java.security.PrivateKey
  */
 object ValidationUtil {
 
-    fun isValidAddress(address: String) : Boolean{
+    fun isValidAddress(address: String?) : Boolean{
         return WalletUtils.isValidAddress(address)
     }
 
-    fun isValidPrivateKey(privateKey: String) : Boolean{
+    fun isValidPrivateKey(privateKey: String?) : Boolean{
         return WalletUtils.isValidPrivateKey(privateKey)
     }
 }

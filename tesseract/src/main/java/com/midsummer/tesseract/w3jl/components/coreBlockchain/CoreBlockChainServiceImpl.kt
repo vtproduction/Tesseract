@@ -22,7 +22,7 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class CoreBlockchainServiceImpl(var web3j: Web3j?) : CoreBlockchainService {
+class CoreBlockChainServiceImpl(var web3j: Web3j?) : CoreBlockChainService {
 
     override fun getAccountBalance(account: EntityWallet?, lastBalance: BigInteger?): Single<BigInteger> {
         return Single.create{ emitter ->
@@ -41,7 +41,7 @@ class CoreBlockchainServiceImpl(var web3j: Web3j?) : CoreBlockchainService {
                 }
             }catch (e : Exception){
                 //emitter.tryOnError(e)
-                Log.e(LogTag.TAG_W3JL,"CoreBlockchainServiceImpl > getAccountBalance: ${e.localizedMessage}")
+                Log.e(LogTag.TAG_W3JL,"CoreBlockChainServiceImpl > getAccountBalance: ${e.localizedMessage}")
                 emitter.onSuccess(lastBalance ?: BigInteger.ZERO)
             }
         }
@@ -64,7 +64,7 @@ class CoreBlockchainServiceImpl(var web3j: Web3j?) : CoreBlockchainService {
                 }
             }catch (e : Exception){
                 //emitter.tryOnError(e)
-                Log.e(LogTag.TAG_W3JL,"CoreBlockchainServiceImpl > getTransactionCount: ${e.localizedMessage}")
+                Log.e(LogTag.TAG_W3JL,"CoreBlockChainServiceImpl > getTransactionCount: ${e.localizedMessage}")
                 emitter.onSuccess(BigInteger.ZERO)
             }
         }
@@ -107,7 +107,7 @@ class CoreBlockchainServiceImpl(var web3j: Web3j?) : CoreBlockchainService {
                     ?.subscribe ({e -> emitter.onSuccess(e.transactionHash)} , { _ -> emitter.onSuccess("")})
 
             }catch(t: Throwable){
-                Log.e(LogTag.TAG_W3JL,"CoreBlockchainServiceImpl > transfer: ${t.localizedMessage}")
+                Log.e(LogTag.TAG_W3JL,"CoreBlockChainServiceImpl > transfer: ${t.localizedMessage}")
                 emitter.onSuccess("")
             }
         }

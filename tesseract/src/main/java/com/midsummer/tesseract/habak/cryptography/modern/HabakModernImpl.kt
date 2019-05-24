@@ -92,14 +92,14 @@ class HabakModernImpl(var alias : String) : Habak {
      * @return decrypted plain string
      * and the current timeStamp
      */
-    override fun decrypt(data: EncryptedModel): String {
+    override fun decrypt(data: EncryptedModel): String? {
         return try {
             val cipher = Cipher.getInstance(Constant.AES_MODE_FROM_M)
             val spec = GCMParameterSpec(128, data.iv)
             cipher.init(Cipher.DECRYPT_MODE, getSecretKey(), spec)
             return String(cipher.doFinal(data.data), Charsets.UTF_8)
         } catch (e: Exception) {
-            ""
+            null
         }
     }
 

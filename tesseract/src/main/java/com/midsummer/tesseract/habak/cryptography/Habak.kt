@@ -12,5 +12,5 @@ interface Habak{
 
     fun initialize() : Habak
     fun encrypt(plainText: String) : EncryptedModel
-    fun decrypt(data: EncryptedModel) : String
+    fun decrypt(data: EncryptedModel) : String?
 }

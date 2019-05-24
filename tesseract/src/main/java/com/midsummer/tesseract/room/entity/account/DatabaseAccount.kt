@@ -23,13 +23,13 @@ abstract class DatabaseAccount : RoomDatabase(){
     companion object {
         private var INSTANCE: DatabaseAccount? = null
 
-        fun getInstance(context: Context): DatabaseAccount? {
+        fun getInstance(context: Context, helperSalt: String = ""): DatabaseAccount? {
             if (INSTANCE == null) {
                 synchronized(DatabaseAccount::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         DatabaseAccount::class.java, Config.Database.NAME)
                         .openHelperFactory(SafeHelperFactory
-                            .fromUser(SpannableStringBuilder("TEST")))
+                            .fromUser(SpannableStringBuilder(helperSalt)))
                         .build()
                 }
             }

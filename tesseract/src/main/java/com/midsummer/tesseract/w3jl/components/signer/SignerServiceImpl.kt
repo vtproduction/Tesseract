@@ -21,12 +21,12 @@ import java.nio.charset.Charset
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class SignerServiceImpl(var web3j: Web3j?) : SignerService {
+class SignerServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : SignerService {
 
 
-    override fun signRawMessage(account: EntityWallet?, message: String?): SignResult {
+    override fun signRawMessage( message: String?): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     message,
@@ -72,13 +72,13 @@ class SignerServiceImpl(var web3j: Web3j?) : SignerService {
         }
     }
 
-    override fun signMessage(account: EntityWallet?, message: String?): SignResult {
-        return signRawMessage(account, message)
+    override fun signMessage(message: String?): SignResult {
+        return signRawMessage( message)
     }
 
-    override fun signPersonalMessage(account: EntityWallet?, message: String?): SignResult {
+    override fun signPersonalMessage( message: String?): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     message,
@@ -125,7 +125,6 @@ class SignerServiceImpl(var web3j: Web3j?) : SignerService {
     }
 
     override fun signTransaction(
-        account: EntityWallet?,
         recipient: String,
         amount: BigInteger?,
         gasPrice: BigInteger?,
@@ -133,7 +132,7 @@ class SignerServiceImpl(var web3j: Web3j?) : SignerService {
         payload: String?
     ): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     null,

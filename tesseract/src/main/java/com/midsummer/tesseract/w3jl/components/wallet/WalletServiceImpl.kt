@@ -3,6 +3,7 @@ package com.midsummer.tesseract.w3jl.components.wallet
 import android.util.Log
 import com.midsummer.tesseract.common.LogTag
 import com.midsummer.tesseract.common.exception.InvalidAddressException
+import com.midsummer.tesseract.common.exception.InvalidMnemonicException
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.constant.WalletSource
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
@@ -53,6 +54,10 @@ class WalletServiceImpl : WalletService {
                 val pathArray = hdPath.split("/".toRegex()).dropLastWhile {path -> path.isEmpty() }.toTypedArray()
                 val passphrase = ""
                 val list = mnemonic.split(" ")
+                if (list.size != 12){
+                    it.onError(InvalidMnemonicException())
+                    return@create
+                }
                 val creationTimeSeconds = System.currentTimeMillis() / 1000
                 val ds = DeterministicSeed(list, null, passphrase, creationTimeSeconds)
                 val seedBytes = ds.seedBytes
@@ -99,7 +104,7 @@ class WalletServiceImpl : WalletService {
             try{
                 val wallet = EntityWallet()
                 if (!WalletUtils.isValidPrivateKey(privateKey)){
-                    it.tryOnError(InvalidPrivateKeyException())
+                    it.onError(InvalidPrivateKeyException())
                     return@create
                 }
                 wallet.createdBy = WalletSource.PRIVATE_KEY

@@ -11,11 +11,11 @@ import java.math.BigInteger
  */
 interface SignerService {
 
-    fun signRawMessage(account: EntityWallet?, message: String?) : SignResult
-    fun signMessage(account: EntityWallet?, message: String?) : SignResult
-    fun signPersonalMessage(account: EntityWallet?, message: String?) : SignResult
+    fun signRawMessage( message: String?) : SignResult
+    fun signMessage( message: String?) : SignResult
+    fun signPersonalMessage( message: String?) : SignResult
 
-    fun signTransaction(account: EntityWallet?,
+    fun signTransaction(
                         recipient: String,
                         amount: BigInteger?,
                         gasPrice: BigInteger?,

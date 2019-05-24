@@ -25,13 +25,13 @@ abstract class DatabaseUniqueConfig : RoomDatabase(){
     companion object {
         private var INSTANCE: DatabaseUniqueConfig? = null
 
-        fun getInstance(context: Context): DatabaseUniqueConfig? {
+        fun getInstance(context: Context, helperSalt: String = ""): DatabaseUniqueConfig? {
             if (INSTANCE == null) {
                 synchronized(DatabaseUniqueConfig::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         DatabaseUniqueConfig::class.java, Config.Database.NAME)
                         .openHelperFactory(SafeHelperFactory
-                            .fromUser(SpannableStringBuilder("TEST")))
+                            .fromUser(SpannableStringBuilder(helperSalt)))
                         .build()
                 }
             }

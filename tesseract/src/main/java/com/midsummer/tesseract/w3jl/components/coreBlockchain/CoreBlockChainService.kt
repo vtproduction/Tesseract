@@ -10,9 +10,9 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-interface CoreBlockchainService {
+interface CoreBlockChainService {
 
-    fun getAccountBalance(account: EntityWallet?, lastBalance: BigInteger?) : Single<BigInteger>
+    fun getAccountBalance(account: EntityWallet?, lastBalance: BigInteger? = BigInteger.ZERO) : Single<BigInteger>
     fun getTransactionCount(account: EntityWallet?) : Single<BigInteger>
     fun transfer(account: EntityWallet?,
                  recipient: String,

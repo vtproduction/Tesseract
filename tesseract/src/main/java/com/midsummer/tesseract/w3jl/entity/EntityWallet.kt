@@ -1,5 +1,6 @@
 package com.midsummer.tesseract.w3jl.entity
 
+import com.google.gson.Gson
 import com.midsummer.tesseract.w3jl.constant.WalletSource
 
 /**
@@ -23,5 +24,15 @@ class EntityWallet {
 
     override fun toString(): String {
         return "EntityWallet{address: $address, metadata: $metadata, walletName: $walletName, chainId: $chainId, createdBy: $createdBy}"
+    }
+
+    companion object{
+        fun readFromString(source: String?) : EntityWallet?{
+            return try{
+                Gson().fromJson<EntityWallet>(source, EntityWallet::class.java)
+            }catch(t: Throwable){
+                null
+            }
+        }
     }
 }
