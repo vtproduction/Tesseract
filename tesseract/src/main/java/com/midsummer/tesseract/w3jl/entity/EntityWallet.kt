@@ -26,6 +26,10 @@ class EntityWallet {
         return "EntityWallet{address: $address, metadata: $metadata, walletName: $walletName, chainId: $chainId, createdBy: $createdBy}"
     }
 
+    fun writeToString() : String {
+        return Gson().toJson(this)
+    }
+
     companion object{
         fun readFromString(source: String?) : EntityWallet?{
             return try{

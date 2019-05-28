@@ -5,7 +5,7 @@ import com.midsummer.tesseract.common.LogTag
 import com.midsummer.tesseract.common.exception.InvalidAddressException
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
-import com.midsummer.tesseract.w3jl.utils.ValidationUtil
+import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import io.reactivex.Single
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
@@ -16,23 +16,25 @@ import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.utils.Numeric
 import java.math.BigInteger
 
+
+
 /**
  * Created by cityme on 22,May,2019
  * Midsummer.
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class CoreBlockChainServiceImpl(var web3j: Web3j?) : CoreBlockChainService {
+class BlockChainServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : BlockChainService {
 
-    override fun getAccountBalance(account: EntityWallet?, lastBalance: BigInteger?): Single<BigInteger> {
+    override fun getAccountBalance(lastBalance: BigInteger?): Single<BigInteger> {
         return Single.create{ emitter ->
             try {
 
-                if(account == null || !WalletUtils.isValidAddress(account.address)){
+                if(account == null || !WalletUtils.isValidAddress(account?.address)){
                     emitter.onError(InvalidAddressException())
                     return@create
                 }else{
-                    web3j?.ethGetBalance(account.address, DefaultBlockParameterName.LATEST)
+                    web3j?.ethGetBalance(account?.address, DefaultBlockParameterName.LATEST)
                         ?.flowable()
                         ?.doOnError {
                             emitter.onSuccess(lastBalance ?: BigInteger.ZERO)
@@ -47,15 +49,15 @@ class CoreBlockChainServiceImpl(var web3j: Web3j?) : CoreBlockChainService {
         }
     }
 
-    override fun getTransactionCount(account: EntityWallet?): Single<BigInteger> {
+    override fun getTransactionCount(): Single<BigInteger> {
         return Single.create{ emitter ->
             try {
 
-                if(account == null || !WalletUtils.isValidAddress(account.address)){
+                if(account == null || !WalletUtils.isValidAddress(account?.address)){
                     emitter.onError(InvalidAddressException())
                     return@create
                 }else{
-                    web3j?.ethGetTransactionCount(account.address, DefaultBlockParameterName.LATEST)
+                    web3j?.ethGetTransactionCount(account?.address, DefaultBlockParameterName.LATEST)
                         ?.flowable()
                         ?.doOnError {
                             emitter.onSuccess(BigInteger.ZERO)
@@ -71,7 +73,6 @@ class CoreBlockChainServiceImpl(var web3j: Web3j?) : CoreBlockChainService {
     }
 
     override fun transfer(
-        account: EntityWallet?,
         recipient: String,
         amount: BigInteger?,
         gasPrice: BigInteger?,
@@ -80,12 +81,12 @@ class CoreBlockChainServiceImpl(var web3j: Web3j?) : CoreBlockChainService {
     ): Single<String> {
         return Single.create { emitter ->
             try{
-                if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+                if (account?.privateKey == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                     emitter.onError(InvalidPrivateKeyException())
                     return@create
                 }
 
-                val credentials = Credentials.create(account.privateKey)
+                val credentials = Credentials.create(account?.privateKey)
                 val realAmount = amount ?: BigInteger.ZERO
                 val from = credentials.address
                 val ethGetTransactionCount = web3j?.ethGetTransactionCount(

@@ -12,16 +12,16 @@ import java.math.BigInteger
  */
 interface TomoValidatorService {
 
-    fun createVoteData(account: EntityWallet?, candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createUnVoteData(account: EntityWallet?, candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createWithdrawData(account: EntityWallet?, blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createProposeData(account: EntityWallet?, coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createResignData(account: EntityWallet?, coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createUnVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createWithdrawData(blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createProposeData(coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createResignData(coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger) : String
 
 
-    fun vote(account: EntityWallet?, candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
-    fun unVote(account: EntityWallet?, candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
-    fun withdraw(account: EntityWallet?, blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
-    fun propose(account: EntityWallet?, coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
-    fun resign(account: EntityWallet?, coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
+    fun vote(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
+    fun unVote(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
+    fun withdraw(blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
+    fun propose(coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
+    fun resign(coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
 }

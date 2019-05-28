@@ -17,10 +17,13 @@ interface AccountDAO {
     fun getAllAccounts() : Single<List<EntityAccount>>
 
     @Query("SELECT * FROM EntityAccount WHERE address = :address LIMIT 1")
-    fun getAccountByAddress(address: String) : Single<EntityAccount>
+    fun getAccountByAddress(address: String) : Single<EntityAccount?>
+
+    @Query("SELECT * FROM EntityAccount LIMIT 1")
+    fun getFirstAccount() : Single<EntityAccount?>
 
     @Query("SELECT * FROM EntityAccount WHERE isSelected = :isSelected LIMIT 1")
-    fun getActiveAccount(isSelected: Boolean = true) : Single<EntityAccount>
+    fun getActiveAccount(isSelected: Boolean = true) : Single<EntityAccount?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAccount(account: EntityAccount) : Single<Long>

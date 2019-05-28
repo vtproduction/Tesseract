@@ -23,12 +23,12 @@ import java.util.*
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
+class TomoValidatorServiceImpl(var account: EntityWallet?,  var web3j: Web3j?) : TomoValidatorService {
 
     private val CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000088"
 
     override fun createVoteData(
-        account: EntityWallet?,
+        
         candidate: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -57,7 +57,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
     }
 
     override fun createUnVoteData(
-        account: EntityWallet?,
+        
         candidate: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -86,7 +86,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
     }
 
     override fun createWithdrawData(
-        account: EntityWallet?,
+        
         blockNumber: BigInteger,
         index: BigInteger,
         gasPrice: BigInteger,
@@ -115,7 +115,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
     }
 
     override fun createProposeData(
-        account: EntityWallet?,
+        
         coinBaseAddress: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -144,7 +144,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
     }
 
     override fun createResignData(
-        account: EntityWallet?,
+        
         coinBaseAddress: String,
         gasPrice: BigInteger,
         gasLimit: BigInteger
@@ -173,7 +173,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
 
     @SuppressLint("CheckResult")
     override fun vote(
-        account: EntityWallet?,
+        
         candidate: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -181,7 +181,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
         callback: TransactionListener?
     ) {
         try{
-            val data = createVoteData(account, candidate, amount, gasPrice, gasLimit)
+            val data = createVoteData( candidate, amount, gasPrice, gasLimit)
             if (data.isEmpty()) {
                 callback?.onTransactionError(Exception("Null signed data"))
                 return
@@ -205,7 +205,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
 
     @SuppressLint("CheckResult")
     override fun unVote(
-        account: EntityWallet?,
+        
         candidate: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -213,7 +213,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
         callback: TransactionListener?
     ) {
         try{
-            val data = createUnVoteData(account, candidate, amount, gasPrice, gasLimit)
+            val data = createUnVoteData(candidate, amount, gasPrice, gasLimit)
             if (data.isEmpty()) {
                 callback?.onTransactionError(Exception("Null signed data"))
                 return
@@ -237,7 +237,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
 
     @SuppressLint("CheckResult")
     override fun withdraw(
-        account: EntityWallet?,
+        
         blockNumber: BigInteger,
         index: BigInteger,
         gasPrice: BigInteger,
@@ -245,7 +245,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
         callback: TransactionListener?
     ) {
         try{
-            val data = createWithdrawData(account, blockNumber, index, gasPrice, gasLimit)
+            val data = createWithdrawData(blockNumber, index, gasPrice, gasLimit)
             if (data.isEmpty()) {
                 callback?.onTransactionError(Exception("Null signed data"))
                 return
@@ -269,7 +269,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
 
     @SuppressLint("CheckResult")
     override fun propose(
-        account: EntityWallet?,
+        
         coinBaseAddress: String,
         amount: BigInteger,
         gasPrice: BigInteger,
@@ -277,7 +277,7 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
         callback: TransactionListener?
     ) {
         try{
-            val data = createProposeData(account, coinBaseAddress, amount, gasPrice, gasLimit)
+            val data = createProposeData(coinBaseAddress, amount, gasPrice, gasLimit)
             if (data.isEmpty()) {
                 callback?.onTransactionError(Exception("Null signed data"))
                 return
@@ -301,14 +301,14 @@ class TomoValidatorServiceImpl(var web3j: Web3j?) : TomoValidatorService {
 
     @SuppressLint("CheckResult")
     override fun resign(
-        account: EntityWallet?,
+        
         coinBaseAddress: String,
         gasPrice: BigInteger,
         gasLimit: BigInteger,
         callback: TransactionListener?
     ) {
         try{
-            val data = createResignData(account, coinBaseAddress, gasPrice, gasLimit)
+            val data = createResignData(coinBaseAddress, gasPrice, gasLimit)
             if (data.isEmpty()) {
                 callback?.onTransactionError(Exception("Null signed data"))
                 return

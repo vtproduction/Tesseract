@@ -1,12 +1,11 @@
 package com.midsummer.tesseract.w3jl.components.tomoChain.token.trc20
 
-import android.util.Log
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.constant.chain.Chain
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
-import com.midsummer.tesseract.w3jl.utils.ValidationUtil
+import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import io.reactivex.Single
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.FunctionReturnDecoder
@@ -36,7 +35,7 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class TRC20ServiceImpl(var web3j: Web3j?, var chain: Chain?) : TRC20Service {
+class TRC20ServiceImpl(var account: EntityWallet?, var web3j: Web3j?, var chain: Chain?) : TRC20Service {
 
 
     override fun getBalance(address: String, tokenAddress: String): Single<BigDecimal> {
@@ -135,7 +134,7 @@ class TRC20ServiceImpl(var web3j: Web3j?, var chain: Chain?) : TRC20Service {
     }
 
     override fun transferToken(
-        account: EntityWallet?,
+
         tokenAddress: String,
         recipient: String,
         amount: BigInteger,
@@ -144,7 +143,7 @@ class TRC20ServiceImpl(var web3j: Web3j?, var chain: Chain?) : TRC20Service {
     ): Single<String> {
         return Single.create { _ ->
             /*try {
-                if (account == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+                if (account == null || !WalletUtil.isValidPrivateKey(account.privateKey)){
                     emitter.onError(InvalidPrivateKeyException())
                     return@create
                 }
@@ -171,7 +170,6 @@ class TRC20ServiceImpl(var web3j: Web3j?, var chain: Chain?) : TRC20Service {
     }
 
     override fun transferToken(
-        account: EntityWallet?,
         tokenAddress: String,
         recipient: String,
         amount: BigInteger,
@@ -180,12 +178,12 @@ class TRC20ServiceImpl(var web3j: Web3j?, var chain: Chain?) : TRC20Service {
         callback: TransactionListener?
     ) {
         try {
-            if (account == null || !ValidationUtil.isValidPrivateKey(account.privateKey)){
+            if (account == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                 callback?.onTransactionError(InvalidPrivateKeyException())
                 return
             }
 
-            val credentials = Credentials.create(account.privateKey)
+            val credentials = Credentials.create(account?.privateKey)
             val transactionReceiptProcessor = QueuingTransactionReceiptProcessor(web3j, object : Callback {
                 override fun accept(transactionReceipt: TransactionReceipt?) {
                     callback?.onTransactionComplete(transactionReceipt!!.transactionHash, transactionReceipt.status)

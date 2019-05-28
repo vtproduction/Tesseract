@@ -3,7 +3,7 @@ package com.midsummer.tesseract.w3jl.components.signer
 import android.util.Log
 import com.midsummer.tesseract.common.LogTag.TAG_W3JL
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
-import com.midsummer.tesseract.w3jl.utils.ValidationUtil
+import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
@@ -26,7 +26,7 @@ class SignerServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : SignerS
 
     override fun signRawMessage( message: String?): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
+            if (account?.privateKey == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     message,
@@ -78,7 +78,7 @@ class SignerServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : SignerS
 
     override fun signPersonalMessage( message: String?): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
+            if (account?.privateKey == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     message,
@@ -132,7 +132,7 @@ class SignerServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : SignerS
         payload: String?
     ): SignResult {
         return try{
-            if (account?.privateKey == null || !ValidationUtil.isValidPrivateKey(account?.privateKey)){
+            if (account?.privateKey == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                 SignResult(
                     SignStatus.SIGN_INVALID_CREDENTIAL,
                     null,

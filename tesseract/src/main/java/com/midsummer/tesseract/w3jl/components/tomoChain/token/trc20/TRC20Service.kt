@@ -18,7 +18,6 @@ interface TRC20Service {
     fun getSymbol(address : String, tokenAddress: String) : Single<String>
     fun getDecimal(address : String, tokenAddress: String) : Single<Int>
     fun transferToken(
-        account: EntityWallet?,
         tokenAddress: String,
         recipient: String,
         amount: BigInteger,
@@ -26,7 +25,6 @@ interface TRC20Service {
         gasLimit: BigInteger
     ) : Single<String>
     fun transferToken(
-        account: EntityWallet?,
         tokenAddress: String,
         recipient: String,
         amount: BigInteger,
