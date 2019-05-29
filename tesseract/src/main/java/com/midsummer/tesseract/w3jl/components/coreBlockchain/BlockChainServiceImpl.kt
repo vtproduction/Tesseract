@@ -5,6 +5,7 @@ import com.midsummer.tesseract.common.LogTag
 import com.midsummer.tesseract.common.exception.InvalidAddressException
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import io.reactivex.Single
 import org.web3j.crypto.Credentials
@@ -24,7 +25,7 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class BlockChainServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : BlockChainService {
+class BlockChainServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?) : BlockChainService {
 
     override fun getAccountBalance(lastBalance: BigInteger?): Single<BigInteger> {
         return Single.create{ emitter ->

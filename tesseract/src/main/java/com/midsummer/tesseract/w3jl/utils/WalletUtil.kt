@@ -5,6 +5,7 @@ import com.midsummer.tesseract.common.LogTag
 import org.web3j.crypto.MnemonicUtils
 import org.web3j.crypto.WalletUtils
 import java.security.PrivateKey
+import java.security.SecureRandom
 
 /**
  * Created by NienLe on 2019-05-03,May,2019
@@ -48,5 +49,13 @@ object WalletUtil {
             Log.e(LogTag.TAG_W3JL, "isValidMnemonics",t)
             false
         }
+    }
+
+    fun generateMnemonics(): String {
+        val initialEntropy = ByteArray(16)
+        val secureRandom =  SecureRandom()
+        secureRandom.nextBytes(initialEntropy)
+
+        return MnemonicUtils.generateMnemonic(initialEntropy)
     }
 }

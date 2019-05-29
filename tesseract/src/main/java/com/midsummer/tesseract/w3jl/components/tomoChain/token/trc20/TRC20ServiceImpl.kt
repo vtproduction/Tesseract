@@ -4,6 +4,7 @@ import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.constant.chain.Chain
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
 import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import io.reactivex.Single
@@ -35,7 +36,7 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class TRC20ServiceImpl(var account: EntityWallet?, var web3j: Web3j?, var chain: Chain?) : TRC20Service {
+class TRC20ServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?, var chain: Chain?) : TRC20Service {
 
 
     override fun getBalance(address: String, tokenAddress: String): Single<BigDecimal> {

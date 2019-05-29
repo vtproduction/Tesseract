@@ -27,4 +27,6 @@ interface CoreFunctions {
     fun removeAccount(address: String?) : Single<Pair<EntityWallet?, Throwable?>>
 
     fun setAccountAsActive(address: String?) : Single<Pair<EntityWallet?, Throwable?>>
+
+    fun setAccountName(address: String?, name: String) : Single<Pair<EntityWallet?, Throwable?>>
 }

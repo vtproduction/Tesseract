@@ -2,6 +2,7 @@ package com.midsummer.tesseract.w3jl.components.tomoChain.masterNode
 
 import android.annotation.SuppressLint
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.datatypes.Address
@@ -23,7 +24,7 @@ import java.util.*
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class TomoValidatorServiceImpl(var account: EntityWallet?,  var web3j: Web3j?) : TomoValidatorService {
+class TomoValidatorServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?) : TomoValidatorService {
 
     private val CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000088"
 

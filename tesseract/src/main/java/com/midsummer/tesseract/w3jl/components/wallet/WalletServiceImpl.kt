@@ -8,6 +8,7 @@ import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.constant.WalletSource
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import io.reactivex.Single
 import org.bitcoinj.crypto.ChildNumber
 import org.bitcoinj.crypto.HDKeyDerivation
@@ -48,7 +49,7 @@ class WalletServiceImpl : WalletService {
     override fun createWalletFromMnemonics(mnemonic: String,
                                            hdPath: String,
                                            walletName: String?,
-                                           chainId: Int?): Single<EntityWallet?> {
+                                           chainId: Int?): Single<EntityWalletKey?> {
         return Single.create {
             try{
                 val pathArray = hdPath.split("/".toRegex()).dropLastWhile {path -> path.isEmpty() }.toTypedArray()
@@ -79,16 +80,12 @@ class WalletServiceImpl : WalletService {
                 val publicKey = Numeric.toHexStringNoPrefixZeroPadded(keyPair.privateKey, 128)
 
                 val c = Credentials.create(privateKey)
-                val wallet = EntityWallet()
-                wallet.dataSource = mnemonic
+                val wallet = EntityWalletKey()
+
                 wallet.createdBy = WalletSource.MNEMONIC
                 wallet.address = c.address
                 wallet.privateKey = privateKey
                 wallet.publicKey = publicKey
-                wallet.metadata = ""
-                wallet.walletName = walletName ?: ""
-                wallet.chainId = chainId ?: CommonChain.TOMO_CHAIN.getChainId()
-                wallet.createAt = System.currentTimeMillis()
                 it.onSuccess(wallet)
             }catch(e: Exception){
                 Log.e(LogTag.TAG_W3JL, "createWalletFromMnemonics", e)
@@ -99,10 +96,10 @@ class WalletServiceImpl : WalletService {
 
     override fun createWalletFromPrivateKey(privateKey: String,
                                             walletName: String?,
-                                            chainId: Int?): Single<EntityWallet?> {
+                                            chainId: Int?): Single<EntityWalletKey?> {
         return Single.create{
             try{
-                val wallet = EntityWallet()
+                val wallet = EntityWalletKey()
                 if (!WalletUtils.isValidPrivateKey(privateKey)){
                     it.onError(InvalidPrivateKeyException())
                     return@create
@@ -110,14 +107,10 @@ class WalletServiceImpl : WalletService {
                 wallet.createdBy = WalletSource.PRIVATE_KEY
                 val c = Credentials.create(privateKey)
                 val publicKey = Numeric.toHexStringNoPrefixZeroPadded(c.ecKeyPair.privateKey, 128)
+
                 wallet.address = c.address
                 wallet.privateKey = privateKey
                 wallet.publicKey = publicKey
-                wallet.dataSource = ""
-                wallet.metadata = ""
-                wallet.walletName = walletName ?: ""
-                wallet.chainId = chainId ?: CommonChain.TOMO_CHAIN.getChainId()
-                wallet.createAt = System.currentTimeMillis()
                 it.onSuccess(wallet)
             }catch(e: Exception){
                 Log.e(LogTag.TAG_W3JL, "createWalletFromPrivateKey",e)
@@ -128,10 +121,10 @@ class WalletServiceImpl : WalletService {
 
     override fun createWalletFromAddress(address: String,
                                          walletName: String?,
-                                         chainId: Int?): Single<EntityWallet?> {
+                                         chainId: Int?): Single<EntityWalletKey?> {
         return Single.create{
             try{
-                val wallet = EntityWallet()
+                val wallet = EntityWalletKey()
                 if (!WalletUtils.isValidAddress(address)){
                     it.tryOnError(InvalidAddressException())
                     return@create
@@ -140,11 +133,6 @@ class WalletServiceImpl : WalletService {
                 wallet.address = address
                 wallet.privateKey = ""
                 wallet.publicKey = ""
-                wallet.dataSource = ""
-                wallet.metadata = ""
-                wallet.walletName = walletName ?: ""
-                wallet.chainId = chainId ?: CommonChain.TOMO_CHAIN.getChainId()
-                wallet.createAt = System.currentTimeMillis()
                 it.onSuccess(wallet)
             }catch(e: Exception){
                 Log.e(LogTag.TAG_W3JL, "createWalletFromPrivateKey",e)

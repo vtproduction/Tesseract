@@ -5,6 +5,7 @@ import com.midsummer.tesseract.common.LogTag.TAG_W3JL
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
 import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.Sign
@@ -21,7 +22,7 @@ import java.nio.charset.Charset
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class SignerServiceImpl(var account: EntityWallet?, var web3j: Web3j?) : SignerService {
+class SignerServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?) : SignerService {
 
 
     override fun signRawMessage( message: String?): SignResult {

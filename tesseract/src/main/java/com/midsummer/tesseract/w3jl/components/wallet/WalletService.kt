@@ -2,6 +2,7 @@ package com.midsummer.tesseract.w3jl.components.wallet
 
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
+import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import io.reactivex.Single
 
 /**
@@ -17,13 +18,13 @@ interface WalletService {
     fun createWalletFromMnemonics(mnemonic: String,
                                   hdPath: String,
                                   walletName: String? = "",
-                                  chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWallet?>
+                                  chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWalletKey?>
 
     fun createWalletFromPrivateKey(privateKey: String,
                                    walletName: String? = "",
-                                   chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWallet?>
+                                   chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWalletKey?>
 
     fun createWalletFromAddress(address: String,
                                 walletName: String? = "",
-                                chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWallet?>
+                                chainId: Int? = CommonChain.TOMO_CHAIN.getChainId()) : Single<EntityWalletKey?>
 }

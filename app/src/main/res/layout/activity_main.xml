@@ -24,14 +24,25 @@
       android:text="VIEW ALL"
       android:id="@+id/btnViewAll"/>
   <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="VIEW ACTIVE"
-      android:id="@+id/btnViewActive"/>
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="VIEW ACTIVE"
+          android:id="@+id/btnViewActive"/>
+
+  <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CHANGE NAME"
+          android:id="@+id/btnChangeName"/>
+  <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="SET ACTIVE"
+          android:id="@+id/btnSetActive"/>
   <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="VIEW DELETE ALL"
+      android:text="DELETE ALL"
       android:id="@+id/btnDeleteAll"/>
 
 </LinearLayout>
