@@ -9,6 +9,7 @@ import com.midsummer.tesseract.core.CoreFunctions
 import com.midsummer.tesseract.core.Tesseract
 import com.midsummer.tesseract.room.entity.account.DatabaseAccount
 import com.midsummer.tesseract.room.entity.account.EntityAccount
+import com.midsummer.tesseract.w3jl.components.coreBlockchain.BlockChainService
 import com.midsummer.tesseract.w3jl.utils.WalletUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,6 +19,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private var coreFunction : CoreFunctions? = null
+    private var blockChainService: BlockChainService? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
 
         coreFunction = Tesseract.getInstance()?.getCoreFunctions()
+        blockChainService = Tesseract.getInstance()?.getCoreBlockChainService()
 
         btnAddTrue.setOnClickListener { add() }
         btnAddFalse.setOnClickListener { add() }
@@ -39,7 +42,21 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     private fun changeWalletName() {
-        coreFunction?.setAccountName("0x9393905115ac7fde290381a0fecf5751250f2d38","NAME")
+        blockChainService?.getAccountBalance("0x6e7312d1028b70771bb9cdd9837442230a9349ca", null)
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.doOnSubscribe {
+                LogUtil.d("MainActivity > setAccountName: on subscribe")
+            }
+            ?.subscribe (
+                {
+                    LogUtil.d("MainActivity > changeWalletName: $it")
+                },
+                {
+                    LogUtil.e("MainActivity > setAccountName fail: ${it.localizedMessage}")
+                }
+            )
+        /*coreFunction?.setAccountName("0x9393905115ac7fde290381a0fecf5751250f2d38","NAME")
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.doOnSubscribe {
@@ -57,7 +74,10 @@ class MainActivity : AppCompatActivity() {
                 {
                     LogUtil.e("MainActivity > setAccountName fail: ${it.localizedMessage}")
                 }
-            )
+            )*/
+
+
+
     }
 
     @SuppressLint("CheckResult")
@@ -109,12 +129,50 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("CheckResult")
     private fun viewActive(){
-        
+        coreFunction?.getActiveAccount()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.doOnSubscribe {
+                LogUtil.d("MainActivity > viewActive: on subscribe")
+            }
+            ?.subscribe (
+                {
+                    LogUtil.d("MainActivity > viewActive success: ${it.first}")
+                    if (it.second != null){
+                        if (it.second is AccountAlreadyExistedException){
+                            LogUtil.e("MainActivity > viewActive: AccountAlreadyExistedException")
+                        }
+                    }
+                },
+                {
+                    LogUtil.e("MainActivity > viewActive fail: ${it.localizedMessage}")
+                }
+            )
     }
     
+    @SuppressLint("CheckResult")
     private fun delete(){
-
+        coreFunction?.removeAccount("0x9393905115ac7fde290381a0fecf5751250f2d38")
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.doOnSubscribe {
+                LogUtil.d("MainActivity > delete: on subscribe")
+            }
+            ?.subscribe (
+                {
+                    LogUtil.d("MainActivity > delete success: ${it.first}")
+                    if (it.second != null){
+                        if (it.second is AccountAlreadyExistedException){
+                            LogUtil.e("MainActivity > delete: AccountAlreadyExistedException")
+                        }
+                    }
+                },
+                {
+                    LogUtil.e("MainActivity > delete fail: ${it.localizedMessage}")
+                }
+            )
     }
 
     @SuppressLint("CheckResult")

@@ -97,20 +97,14 @@ class Tesseract {
 
     fun getSignerService() : SignerService?{
         if (signerService == null){
-            val activeAccount = databaseAccount?.accountDAO()?.getActiveAccount()?.blockingGet() ?: throw DefaultAccountNotFoundException()
-            val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount.encryptedData)) ?: throw CorruptedHabakException()
-            val entityWallet = EntityWalletKey.readFromString(wallet) ?: throw CorruptedHabakException()
-            signerService =  SignerServiceImpl(entityWallet, web3j)
+            signerService =  SignerServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
         }
         return signerService
     }
 
     fun getTomoValidatorService() : TomoValidatorService?{
         if (tomoValidatorService == null){
-            val activeAccount = databaseAccount?.accountDAO()?.getActiveAccount()?.blockingGet() ?: throw DefaultAccountNotFoundException()
-            val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount.encryptedData)) ?: throw CorruptedHabakException()
-            val entityWallet = EntityWalletKey.readFromString(wallet) ?: throw CorruptedHabakException()
-            tomoValidatorService =  TomoValidatorServiceImpl(entityWallet, web3j)
+            tomoValidatorService =  TomoValidatorServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
         }
         return tomoValidatorService
 
@@ -118,21 +112,14 @@ class Tesseract {
 
     fun getTRC20Service() : TRC20Service?{
         if (trC20Service == null){
-            val activeAccount = databaseAccount?.accountDAO()?.getActiveAccount()?.blockingGet() ?: throw DefaultAccountNotFoundException()
-            val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount.encryptedData)) ?: throw CorruptedHabakException()
-            val entityWallet = EntityWalletKey.readFromString(wallet) ?: throw CorruptedHabakException()
-            trC20Service = TRC20ServiceImpl(entityWallet, web3j, config.chain())
+            trC20Service = TRC20ServiceImpl(databaseAccount?.accountDAO(), habak, web3j, config.chain())
         }
         return trC20Service
     }
 
     fun getCoreBlockChainService() : BlockChainService?{
         if (coreBlockChainService == null){
-
-            val activeAccount = databaseAccount?.accountDAO()?.getActiveAccount()?.blockingGet() ?: throw DefaultAccountNotFoundException()
-            val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount.encryptedData)) ?: throw CorruptedHabakException()
-            val entityWallet = EntityWalletKey.readFromString(wallet) ?: throw CorruptedHabakException()
-            coreBlockChainService =  BlockChainServiceImpl(entityWallet, web3j)
+            coreBlockChainService =  BlockChainServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
         }
         return coreBlockChainService
 

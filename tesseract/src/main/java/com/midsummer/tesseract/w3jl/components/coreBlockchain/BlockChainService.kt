@@ -6,6 +6,11 @@ import java.math.BigInteger
 interface BlockChainService {
     fun getAccountBalance(lastBalance: BigInteger?): Single<BigInteger>
     fun getTransactionCount(): Single<BigInteger>
+
+    fun getAccountBalance(address: String?, lastBalance: BigInteger?): Single<BigInteger>
+    fun getTransactionCount(address: String?): Single<BigInteger>
+
+
     fun transfer(
         recipient: String,
         amount: BigInteger?,

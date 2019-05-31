@@ -1,6 +1,11 @@
 package com.midsummer.tesseract.w3jl.components.tomoChain.token.trc20
 
+import android.annotation.SuppressLint
+import com.midsummer.tesseract.common.exception.DefaultAccountNotFoundException
 import com.midsummer.tesseract.common.exception.InvalidPrivateKeyException
+import com.midsummer.tesseract.habak.EncryptedModel
+import com.midsummer.tesseract.habak.cryptography.Habak
+import com.midsummer.tesseract.room.entity.account.AccountDAO
 import com.midsummer.tesseract.w3jl.constant.chain.Chain
 import com.midsummer.tesseract.w3jl.constant.chain.CommonChain
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
@@ -36,7 +41,7 @@ import java.math.BigInteger
  * Ping me at nienbkict@gmail.com
  * Happy coding ^_^
  */
-class TRC20ServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?, var chain: Chain?) : TRC20Service {
+class TRC20ServiceImpl(var accountDA0: AccountDAO?, var habak: Habak?, var web3j: Web3j?, var chain: Chain?) : TRC20Service {
 
 
     override fun getBalance(address: String, tokenAddress: String): Single<BigDecimal> {
@@ -142,34 +147,53 @@ class TRC20ServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?, var cha
         gasPrice: BigInteger,
         gasLimit: BigInteger
     ): Single<String> {
-        return Single.create { _ ->
+        return Single.create { emitter ->
             /*try {
-                if (account == null || !WalletUtil.isValidPrivateKey(account.privateKey)){
+                val activeAccount = accountDA0?.getActiveAccount()?.blockingGet()
+                if (activeAccount == null){
+                    emitter.onError(DefaultAccountNotFoundException())
+                    return@create
+                }
+                val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount.encryptedData))
+                val account = EntityWalletKey.readFromString(wallet)
+                if (account == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
                     emitter.onError(InvalidPrivateKeyException())
                     return@create
                 }
 
-                val params = Arrays.asList(Address(recipient), Uint256(amount))
-                val returnTypes = Arrays.asList<TypeReference<*>>(object : TypeReference<Bool>() {
+                val credentials = Credentials.create(account?.privateKey)
+                val transactionReceiptProcessor = QueuingTransactionReceiptProcessor(web3j, object : Callback {
+                    override fun accept(transactionReceipt: TransactionReceipt?) {
+                        //callback?.onTransactionComplete(transactionReceipt!!.transactionHash, transactionReceipt.status)
+                        emitter.onSuccess(transactionReceipt!!.transactionHash)
+                    }
 
-                })
-                val function = Function("transfer", params, returnTypes)
-                val encodedFunction = FunctionEncoder.encode(function)
-                val data = Numeric.hexStringToByteArray(Numeric.cleanHexPrefix(encodedFunction))
-                val nonce = web3j
-                    ?.ethGetTransactionCount(account.address, DefaultBlockParameterName.LATEST)
-                    ?.sendAsync()?.get()?.transactionCount
-                val signedMessage = GethService(context)
-                        .signTransaction(from, privateKey, mTokenInfo!!.address, BigInteger.valueOf(0), gasPrice, gasLimit, nonce.toLong(), data, 3)
-                emitter.onSuccess(web3j
-                        .ethSendRawTransaction(Numeric.toHexString(signedMessage))
-                        .sendAsync().get().transactionHash)
-            } catch (e: Exception) {
-                emitter.tryOnError(e)
+                    override fun exception(exception: java.lang.Exception?) {
+                        emitter.onError(Exception(exception?.localizedMessage))
+                    }
+                }, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH * 2, TransactionManager.DEFAULT_POLLING_FREQUENCY )
+                val transactionManager = RawTransactionManager(web3j,
+                    credentials,
+                    chain?.getChainId()?.toByte() ?: CommonChain.TOMO_CHAIN.getChainId().toByte(),
+                    transactionReceiptProcessor)
+                val tokenContract =
+                    TRC20(
+                        tokenAddress,
+                        web3j,
+                        transactionManager,
+                        gasPrice,
+                        gasLimit
+                    )
+                val t = tokenContract.transfer(recipient, amount).sendAsync().get()
+                callback?.onTransactionCreated(t.transactionHash)
+
+            }catch (e: Exception){
+                callback?.onTransactionError(e)
             }*/
         }
     }
 
+    @SuppressLint("CheckResult")
     override fun transferToken(
         tokenAddress: String,
         recipient: String,
@@ -179,35 +203,48 @@ class TRC20ServiceImpl(var account: EntityWalletKey?, var web3j: Web3j?, var cha
         callback: TransactionListener?
     ) {
         try {
-            if (account == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
-                callback?.onTransactionError(InvalidPrivateKeyException())
-                return
-            }
+            accountDA0?.getActiveAccount()?.subscribe(
+                { activeAccount ->
+                    if (activeAccount == null){
+                        callback?.onTransactionError(DefaultAccountNotFoundException())
+                    }
+                    val wallet = habak?.decrypt(EncryptedModel.readFromString(activeAccount!!.encryptedData))
+                    val account = EntityWalletKey.readFromString(wallet)
+                    if (account == null || !WalletUtil.isValidPrivateKey(account?.privateKey)){
+                        callback?.onTransactionError(InvalidPrivateKeyException())
+                        return@subscribe
+                    }
 
-            val credentials = Credentials.create(account?.privateKey)
-            val transactionReceiptProcessor = QueuingTransactionReceiptProcessor(web3j, object : Callback {
-                override fun accept(transactionReceipt: TransactionReceipt?) {
-                    callback?.onTransactionComplete(transactionReceipt!!.transactionHash, transactionReceipt.status)
-                }
+                    val credentials = Credentials.create(account.privateKey)
+                    val transactionReceiptProcessor = QueuingTransactionReceiptProcessor(web3j, object : Callback {
+                        override fun accept(transactionReceipt: TransactionReceipt?) {
+                            callback?.onTransactionComplete(transactionReceipt!!.transactionHash, transactionReceipt.status)
+                        }
 
-                override fun exception(exception: java.lang.Exception?) {
-                    callback?.onTransactionError(exception!!)
+                        override fun exception(exception: java.lang.Exception?) {
+                            callback?.onTransactionError(exception!!)
+                        }
+                    }, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH * 2, TransactionManager.DEFAULT_POLLING_FREQUENCY )
+                    val transactionManager = RawTransactionManager(web3j,
+                        credentials,
+                        chain?.getChainId()?.toByte() ?: CommonChain.TOMO_CHAIN.getChainId().toByte(),
+                        transactionReceiptProcessor)
+                    val tokenContract =
+                        TRC20(
+                            tokenAddress,
+                            web3j,
+                            transactionManager,
+                            gasPrice,
+                            gasLimit
+                        )
+                    val t = tokenContract.transfer(recipient, amount).sendAsync().get()
+                    callback?.onTransactionCreated(t.transactionHash)
+                },{
+                    callback?.onTransactionError(it as Exception)
                 }
-            }, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH * 2, TransactionManager.DEFAULT_POLLING_FREQUENCY )
-            val transactionManager = RawTransactionManager(web3j,
-                credentials,
-                chain?.getChainId()?.toByte() ?: CommonChain.TOMO_CHAIN.getChainId().toByte(),
-                transactionReceiptProcessor)
-            val tokenContract =
-                TRC20(
-                    tokenAddress,
-                    web3j,
-                    transactionManager,
-                    gasPrice,
-                    gasLimit
-                )
-            val t = tokenContract.transfer(recipient, amount).sendAsync().get()
-            callback?.onTransactionCreated(t.transactionHash)
+            )
+
+
 
         }catch (e: Exception){
             callback?.onTransactionError(e)

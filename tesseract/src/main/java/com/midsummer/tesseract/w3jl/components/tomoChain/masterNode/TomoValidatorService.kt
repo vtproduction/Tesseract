@@ -2,6 +2,7 @@ package com.midsummer.tesseract.w3jl.components.tomoChain.masterNode
 
 import com.midsummer.tesseract.w3jl.entity.EntityWallet
 import com.midsummer.tesseract.w3jl.listener.TransactionListener
+import io.reactivex.Single
 import java.math.BigInteger
 
 /**
@@ -12,11 +13,11 @@ import java.math.BigInteger
  */
 interface TomoValidatorService {
 
-    fun createVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createUnVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createWithdrawData(blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createProposeData(coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : String
-    fun createResignData(coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger) : String
+    fun createVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : Single<String>?
+    fun createUnVoteData(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : Single<String>?
+    fun createWithdrawData(blockNumber: BigInteger, index: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : Single<String>?
+    fun createProposeData(coinBaseAddress: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger) : Single<String>?
+    fun createResignData(coinBaseAddress: String, gasPrice: BigInteger, gasLimit: BigInteger) : Single<String>?
 
 
     fun vote(candidate: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, callback: TransactionListener?)
