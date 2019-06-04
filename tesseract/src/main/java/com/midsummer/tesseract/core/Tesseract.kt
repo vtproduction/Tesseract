@@ -1,6 +1,9 @@
 package com.midsummer.tesseract.core
 
 import android.content.Context
+import com.midsummer.tesseract.common.dagger.ApplicationComponent
+import com.midsummer.tesseract.common.dagger.ApplicationModule
+import com.midsummer.tesseract.common.dagger.DaggerApplicationComponent
 import com.midsummer.tesseract.common.exception.CorruptedHabakException
 import com.midsummer.tesseract.common.exception.DefaultAccountNotFoundException
 import com.midsummer.tesseract.habak.EncryptedModel
@@ -24,6 +27,7 @@ import com.midsummer.tesseract.w3jl.entity.EntityWalletKey
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 /**
  * Created by cityme on 24,May,2019
@@ -35,19 +39,17 @@ class Tesseract {
 
     private var context: WeakReference<Context>? = null
     private var config: TesseractConfig = DefaultTesseractConfig()
-    private var web3j: Web3j? = null
 
-    private var habak: Habak? = null
+    @Inject lateinit var databaseAccount: DatabaseAccount
+    @Inject lateinit var databaseUniqueConfig: DatabaseUniqueConfig
+    @Inject lateinit var walletService: WalletService
+    @Inject lateinit var tomoValidatorService: TomoValidatorService
+    @Inject lateinit var coreBlockChainService: BlockChainService
+    @Inject lateinit var signerService: SignerService
+    @Inject lateinit var trC20Service: TRC20Service
+    @Inject lateinit var coreFunctions : CoreFunctions
 
-    private var databaseAccount: DatabaseAccount? = null
-    private var databaseUniqueConfig: DatabaseUniqueConfig? = null
 
-    private var walletService: WalletService? = null
-    private var tomoValidatorService: TomoValidatorService? = null
-    private var coreBlockChainService: BlockChainService? = null
-    private var signerService: SignerService? = null
-    private var trC20Service: TRC20Service? = null
-    private var coreFunctions: CoreFunctions? = null
 
     companion object{
         private var instance: Tesseract? = null
@@ -56,21 +58,12 @@ class Tesseract {
             instance = Tesseract()
             instance?.context = context
             instance?.config = config
-            instance?.web3j = Web3j.build(HttpService(config.chain().getEndpoint()))
-            instance?.habak = HabakFactory().withAlias(config.habakAlias()).build()
-            instance?.databaseAccount = context.get()?.let { DatabaseAccount.getInstance(it) }
-            instance?.databaseUniqueConfig = context.get()?.let { DatabaseUniqueConfig.getInstance(it) }
-            instance?.walletService = WalletServiceImpl()
+            instance?.getApplicationComponent()?.inject(instance)
 
         }
 
         fun changeConfig(config: TesseractConfig){
             instance?.config = config
-            instance?.trC20Service = null
-            instance?.signerService = null
-            instance?.coreBlockChainService = null
-            instance?.tomoValidatorService = null
-            instance?.coreFunctions = null
         }
 
         fun getInstance() : Tesseract?{
@@ -82,48 +75,9 @@ class Tesseract {
         }
     }
 
-    fun getUniqueConfigDatabase() : UniqueConfigDAO?{
-        return databaseUniqueConfig?.uniqueConfigDAO()
+
+    private fun getApplicationComponent() : ApplicationComponent{
+        return DaggerApplicationComponent.builder()
+            .applicationModule(context?.let { ApplicationModule(it, config) }).build()
     }
-
-
-    fun getCoreFunctions() : CoreFunctions?{
-        if (coreFunctions == null){
-            coreFunctions = CoreFunctionsImpl(habak, databaseAccount, walletService)
-        }
-        return coreFunctions
-    }
-
-
-    fun getSignerService() : SignerService?{
-        if (signerService == null){
-            signerService =  SignerServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
-        }
-        return signerService
-    }
-
-    fun getTomoValidatorService() : TomoValidatorService?{
-        if (tomoValidatorService == null){
-            tomoValidatorService =  TomoValidatorServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
-        }
-        return tomoValidatorService
-
-    }
-
-    fun getTRC20Service() : TRC20Service?{
-        if (trC20Service == null){
-            trC20Service = TRC20ServiceImpl(databaseAccount?.accountDAO(), habak, web3j, config.chain())
-        }
-        return trC20Service
-    }
-
-    fun getCoreBlockChainService() : BlockChainService?{
-        if (coreBlockChainService == null){
-            coreBlockChainService =  BlockChainServiceImpl(databaseAccount?.accountDAO(), habak, web3j)
-        }
-        return coreBlockChainService
-
-    }
-
-
 }

@@ -28,8 +28,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        coreFunction = Tesseract.getInstance()?.getCoreFunctions()
-        blockChainService = Tesseract.getInstance()?.getCoreBlockChainService()
+        //coreFunction = Tesseract.getInstance()?.applicationComponent?.getCoreFunctions()
+        coreFunction = Tesseract.getInstance()?.coreFunctions
+        blockChainService = Tesseract.getInstance()?.coreBlockChainService
 
         btnAddTrue.setOnClickListener { add() }
         btnAddFalse.setOnClickListener { add() }

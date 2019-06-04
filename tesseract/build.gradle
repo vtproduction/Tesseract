@@ -53,19 +53,19 @@ dependencies {
     androidTestImplementation 'org.slf4j:slf4j-nop:1.7.25'
 
 
-    /*implementation 'com.google.dagger:dagger-android:2.17'
+    implementation 'com.google.dagger:dagger-android:2.17'
     implementation 'com.google.dagger:dagger-android-support:2.17'
     kapt 'com.google.dagger:dagger-android-processor:2.17'
     kapt 'com.google.dagger:dagger-compiler:2.17'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31'*/
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31'
 
     //ROOM
-    api "androidx.room:room-runtime:2.1.0-beta01"
-    kapt "androidx.room:room-compiler:2.1.0-beta01" // For Kotlin use kapt instead of annotationProcessor
+    api "androidx.room:room-runtime:2.1.0-rc01"
+    kapt "androidx.room:room-compiler:2.1.0-rc01" // For Kotlin use kapt instead of annotationProcessor
     implementation "com.commonsware.cwac:saferoom.x:1.0.2"
     // optional - Kotlin Extensions and Coroutines support for Room
-    api "androidx.room:room-ktx:2.1.0-beta01"
-    api "androidx.room:room-rxjava2:2.1.0-beta01"
+    api "androidx.room:room-ktx:2.1.0-rc01"
+    api "androidx.room:room-rxjava2:2.1.0-rc01"
 
     //HABAK
     implementation "com.google.code.gson:gson:2.8.5"
